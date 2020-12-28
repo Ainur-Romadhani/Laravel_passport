@@ -142,8 +142,54 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function tongsampah($id)
     {
-        //
+        $data = Todo::where('user_id',$id)->onlyTrashed()->get();
+
+        return response()->Json([
+            'data_todo' => $data
+        ],200);
+
     }
+
+    public function softdelete(Request $request, $id_todos)
+    {
+        $data = Todo::findOrFail($id_todos);
+
+        $data->delete_by    = $request->delete_by;
+        $data->save();
+        
+        $data->delete();
+
+        return response()->Json('Data di delete',200);
+    }
+
+    public function restore($id_todos)
+    {
+        $todo = Todo::onlyTrashed()->where('id_todos',$id_todos);
+        $todo->restore();
+        return response()->json("berhasil",200);
+    }
+
+    public function restoreall()
+    {
+        $todo = Todo::onlyTrashed();
+        $todo->restore();
+        return response()->json("Berhasil restore !!",200);
+    }
+
+    public function deleteall()
+    {
+        $todo = Todo::onlyTrashed();
+        $todo->forceDelete();
+        return response()->json("Berhasil !",200);
+    }
+
+    public function deletepermanet($id_todos)
+    {
+        $todo = Todo::onlyTrashed()->where('id_todos',$id_todos);
+        $todo->forceDelete();
+        return response()->json("berhasil",200);
+    }
+    
 }

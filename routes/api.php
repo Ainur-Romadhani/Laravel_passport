@@ -20,13 +20,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('/datauser',UserController::class)->middleware('auth:api');
-// Route::resource('/todo',TodoController::class);
 Route::get('todo/index/{id}',[TodoController::class, 'index']);
 Route::get('todo/create/{id}',[TodoController::class, 'create']);
 Route::post('todo/store',[TodoController::class, 'store']);
 Route::get('todo/edit/{id_todos}',[TodoController::class, 'edit']);
 Route::put('todo/update/{id_todos}',[TodoController::class, 'update']);
-// Route::resource('/post', PostController::class);
+
+
+Route::post('todo/softdelete/{id_todos}',[TodoController::class, 'softdelete']);
+Route::get('todo/tongsampah/{id}',[TodoController::class, 'tongsampah']);
+Route::post('todo/restore/{id_todos}',[TodoController::class, 'restore']);
+Route::post('todo/delete/{id_todos}',[TodoController::class,'deletepermanet']);
+// belum ditampilkan di vue
+Route::post('todo/restoreall',[TodoController::class, 'restoreall']);
+Route::delete('todo/deleteall',[TodoController::class, 'deleteall']);
+// 
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
